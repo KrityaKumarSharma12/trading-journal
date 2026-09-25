@@ -4,3 +4,9 @@ dist/
 .env.local
 *.log
 uploads/
+
+# Local test artifacts
+cookies.txt
+login.json
+register.json
+trade.json
