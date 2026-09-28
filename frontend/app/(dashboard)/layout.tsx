@@ -11,6 +11,7 @@ import {
   BookOpen,
   Target,
   CalendarDays,
+  Upload,
   LogOut,
   TrendingUp,
 } from "lucide-react";
@@ -24,6 +25,7 @@ const NAV = [
   { href: "/calendar", label: "Calendar", icon: CalendarDays},
   { href: "/analytics", label: "Analytics", icon: LineChart },
   { href: "/journal", label: "Journal", icon: BookOpen },
+  { href: "/import", label: "Import", icon: Upload}
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
