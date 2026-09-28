@@ -12,6 +12,7 @@ import {
   Target,
   CalendarDays,
   Upload,
+  ShieldCheck,
   LogOut,
   TrendingUp,
 } from "lucide-react";
@@ -21,14 +22,18 @@ const NAV = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/trades", label: "Trades", icon: ListOrdered },
   { href: "/trades/new", label: "New Trade", icon: PlusCircle },
-  { href: "/strategies", label: "Strategies", icon: Target},
-  { href: "/calendar", label: "Calendar", icon: CalendarDays},
+  { href: "/strategies", label: "Strategies", icon: Target },
+  { href: "/calendar", label: "Calendar", icon: CalendarDays },
   { href: "/analytics", label: "Analytics", icon: LineChart },
   { href: "/journal", label: "Journal", icon: BookOpen },
-  { href: "/import", label: "Import", icon: Upload}
+  { href: "/import", label: "Import", icon: Upload },
 ];
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -50,6 +55,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     router.push("/login");
   }
 
+  const isAdmin = user.role === "ADMIN";
+  const adminActive = pathname?.startsWith("/admin");
+
   return (
     <div className="min-h-screen flex bg-slate-950">
       <aside className="w-60 border-r border-slate-800 bg-slate-900/50 flex flex-col">
@@ -57,6 +65,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <TrendingUp className="w-5 h-5 text-emerald-500" />
           <span className="font-semibold text-white">Trading Journal</span>
         </div>
+
         <nav className="flex-1 p-3 space-y-1">
           {NAV.map((item) => {
             const Icon = item.icon;
@@ -78,20 +87,36 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </Link>
             );
           })}
+
+          {/* Admin-only link */}
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition ${
+                adminActive
+                  ? "bg-emerald-500/10 text-emerald-400"
+                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+              }`}
+            >
+              <ShieldCheck className="w-4 h-4" />
+              Admin
+            </Link>
+          )}
         </nav>
+
         <div className="p-3 border-t border-slate-800">
-  <div className="px-3 py-2 mb-2">
-    <p className="text-xs text-slate-500">Signed in as</p>
-    <p className="text-sm text-slate-300 truncate">{user.email}</p>
-  </div>
-  <button
-  onClick={handleLogout}
-  className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-slate-800 transition"
->
-  <LogOut className="w-4 h-4 shrink-0" />
-  <span className="shrink-0">Logout</span>
-</button>
-</div>
+          <div className="px-3 py-2 mb-2">
+            <p className="text-xs text-slate-500">Signed in as</p>
+            <p className="text-sm text-slate-300 truncate">{user.email}</p>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-400 hover:text-white hover:bg-slate-800 transition"
+          >
+            <LogOut className="w-4 h-4 shrink-0" />
+            <span className="shrink-0">Logout</span>
+          </button>
+        </div>
       </aside>
 
       <main className="flex-1 overflow-x-hidden">{children}</main>
