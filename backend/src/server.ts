@@ -8,6 +8,7 @@ import tradeRoutes from "./routes/trades.routes";
 import analyticsRoutes from "./routes/analytics.routes";
 import strategyRoutes from "./routes/strategies.routes";
 import importRoutes from "./routes/import.routes";
+import journalRoutes from "./routes/journal.routes";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/trades", tradeRoutes);
 app.use("/analytics", analyticsRoutes);
 app.use("/strategies", strategyRoutes);
 app.use("/import", importRoutes);
+app.use("/journal", journalRoutes);
 
 const PORT = Number(process.env.PORT) || 4000;
 app.listen(PORT, () => {
