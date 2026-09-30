@@ -13,6 +13,7 @@ import {
   CalendarDays,
   Upload,
   ShieldCheck,
+  Link2,
   LogOut,
   TrendingUp,
 } from "lucide-react";
@@ -27,6 +28,7 @@ const NAV = [
   { href: "/analytics", label: "Analytics", icon: LineChart },
   { href: "/journal", label: "Journal", icon: BookOpen },
   { href: "/import", label: "Import", icon: Upload },
+  {href: "/settings/brokers", label: "Brokers", icon: Link2}
 ];
 
 export default function DashboardLayout({

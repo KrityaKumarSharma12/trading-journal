@@ -10,6 +10,7 @@ import strategyRoutes from "./routes/strategies.routes";
 import importRoutes from "./routes/import.routes";
 import journalRoutes from "./routes/journal.routes";
 import adminRoutes from"./routes/admin.routes";
+import brokerRoutes from "./routes/brokers.routes";
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use("/strategies", strategyRoutes);
 app.use("/import", importRoutes);
 app.use("/journal", journalRoutes);
 app.use("/admin", adminRoutes);
+app.use("/brokers", brokerRoutes);
 
 const PORT = Number(process.env.PORT) || 4000;
 app.listen(PORT, () => {

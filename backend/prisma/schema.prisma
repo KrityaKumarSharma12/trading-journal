@@ -32,7 +32,9 @@ model User {
   strategies     Strategy[]
   journalEntries JournalEntry[]
   accounts       Account[]
+  brokerConnections   BrokerConnection[] 
   createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt  @default(now())
 }
 
 model Account {
@@ -90,11 +92,15 @@ model Trade {
   notes        String?
   followedPlan Boolean?  @default(true)
 
+  source        String?  // "MANUAL"  | "DELTA_IMPORT"  | "CSV_IMPORT"
+  externalId    String?  // Delta fill ID for deduplication
+
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt  @default(now())
 
   @@index([userId, symbol])
   @@index([userId, entryTime])
+  @@unique([userId, source, externalId])
 }
 
 model JournalEntry {
@@ -109,4 +115,19 @@ model JournalEntry {
   createdAt DateTime @default(now())
 
   @@index([userId, date])
+}
+
+model BrokerConnection {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  broker     String   // "DELTA_INDIA"
+  apiKey     String
+  apiSecret  String   // encrypted with AES-256-GCM
+  label      String?
+  lastSyncAt DateTime?
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, broker, apiKey])
+  @@index([userId])
 }
